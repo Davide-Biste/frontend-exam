@@ -1,24 +1,52 @@
 import logo from './logo.svg';
+import {Button, CircularProgress} from "@mui/material";
 import './App.css';
+import {getOrders, getUsers} from "./api";
+import {useState} from "react";
+import List from "./Component/List";
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import WorkIcon from '@mui/icons-material/Work';
 
 function App() {
+
+    const [waitData, setWaitData] = useState(null);
+    const [usersToPass, setUsersToPass] = useState(null);
+
+    const getListOfUsers = async () => {
+        const data = await getUsers();
+        await setWaitData(data);
+        console.log({data})
+    }
+
+    const getListOfOrders = async () => {
+        const data = await getOrders();
+        await setWaitData(data);
+        console.log({data})
+
+        const users = await getUsers();
+        await setUsersToPass(users);
+        console.log({users})
+
+    }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <div style={{display:"flex",flexDirection:"row"}}>
+            <div className="Button-home">
+                <Button style={{height:70, width:140}} startIcon={<PeopleAltIcon />} onClick={getListOfUsers} variant="contained">Utenti</Button>
+            </div>
+            <div className="Button-home">
+                <Button style={{height:70, width:140}} startIcon={<WorkIcon />} onClick={getListOfOrders} variant="contained">Commesse</Button>
+            </div>
+        </div>
+        {waitData && usersToPass ? waitData.map((data)=>{
+            return <List data={data} usersToPass={usersToPass} key={data._id}/>
+        }) : <div>
+            <CircularProgress/>
+        </div>}
     </div>
+
+
   );
 }
 
