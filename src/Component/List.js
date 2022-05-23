@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {Snackbar, Alert, Button, Select, FormControl, MenuItem, InputLabel, Typography, AccordionDetails, AccordionSummary, Accordion} from "@mui/material";
+import {Snackbar, Alert, Avatar, Button, Select, FormControl, MenuItem, InputLabel, Typography, AccordionDetails, AccordionSummary, Accordion} from "@mui/material";
+import {grey} from "@mui/material/colors";
 
 const List = ({data, usersToPass}) => {
 
@@ -39,7 +40,13 @@ const List = ({data, usersToPass}) => {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >
-                    <Typography><h3>{data.email || data.acronym}</h3></Typography>
+                    <Typography>
+                        <div style={{display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
+                            {data.email ? <Avatar style={{marginRight:5}}sx={{ bgcolor: grey }}>{data.email.charAt(0).toUpperCase()}</Avatar> : []}
+                            <h3>{data.email || data.acronym}</h3>
+                        </div>
+
+                    </Typography>
                 </AccordionSummary>
                 <AccordionDetails style={{display:"flex",justifyContent:"left", alignItems:"top"}}>
                     {data.email ?

@@ -11,14 +11,20 @@ function App() {
 
     const [waitData, setWaitData] = useState(null);
     const [usersToPass, setUsersToPass] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const getListOfUsers = async () => {
+        setIsLoading(true);
         const data = await getUsers();
         await setWaitData(data);
         console.log({data})
+
+        await setUsersToPass(data);
+        setIsLoading(false);
     }
 
     const getListOfOrders = async () => {
+        setIsLoading(true);
         const data = await getOrders();
         await setWaitData(data);
         console.log({data})
@@ -27,6 +33,7 @@ function App() {
         await setUsersToPass(users);
         console.log({users})
 
+        setIsLoading(false);
     }
 
   return (
@@ -42,7 +49,8 @@ function App() {
         {waitData && usersToPass ? waitData.map((data)=>{
             return <List data={data} usersToPass={usersToPass} key={data._id}/>
         }) : <div>
-            <CircularProgress/>
+            {isLoading ? <CircularProgress/> : <text>Clicca un bottone per visualizzare i dati!</text>
+            }
         </div>}
     </div>
 
